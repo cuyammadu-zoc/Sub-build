@@ -1,3 +1,9 @@
+import sys
+import os
+
+# Add repository root directory to Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from sim.sub_simulator import VirtualSubmarine
 
 def test_sub_physics_integration():
