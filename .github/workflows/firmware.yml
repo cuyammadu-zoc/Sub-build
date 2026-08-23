@@ -44,12 +44,10 @@ jobs:
       - name: Run PlatformIO Build
         run: pio run
 
-      - name: Upload Compiled Firmware Artifacts
+      - name: Upload Compiled Binary Artifact
         uses: actions/upload-artifact@v4
         if: github.event_name == 'push'
         with:
-          name: sub-firmware-${{ github.sha }}
-          path: |
-            .pio/build/*/*.bin
-            .pio/build/*/*.hex
+          name: esp32-firmware
+          path: .pio/build/esp32_sub_controller/firmware.bin
           retention-days: 7
