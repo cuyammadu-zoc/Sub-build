@@ -1,1 +1,21 @@
-.vscode/*
+# Operating System Junk
+.DS_Store
+Thumbs.db
+
+# IDEs & Editors
+.vscode/
+.idea/
+
+# Embedded & PlatformIO Builds
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# Python Caches & Virtual Environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+venv/
+env/
