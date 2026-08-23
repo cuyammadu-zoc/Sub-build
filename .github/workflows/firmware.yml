@@ -1,0 +1,55 @@
+name: Firmware Build Pipeline
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    paths:
+      - 'firmware/**'
+      - 'src/**'
+      - 'lib/**'
+      - 'include/**'
+      - 'programs/**'
+      - 'platformio.ini'
+      - '.github/workflows/firmware.yml'
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    name: Build Firmware Binaries
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Cache PlatformIO Core & Packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            .pio
+          key: ${{ runner.os }}-pio-${{ hashFiles('platformio.ini') }}
+          restore-keys: |
+            ${{ runner.os }}-pio-
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+
+      - name: Run PlatformIO Build
+        run: pio run
+
+      - name: Upload Compiled Firmware Artifacts
+        uses: actions/upload-artifact@v4
+        if: github.event_name == 'push'
+        with:
+          name: sub-firmware-${{ github.sha }}
+          path: |
+            .pio/build/*/*.bin
+            .pio/build/*/*.hex
+          retention-days: 7
